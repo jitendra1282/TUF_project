@@ -112,10 +112,12 @@ function CalendarInner() {
         onTouchEnd={onTouchEnd}
       >
         {/* Main: hero left + content right */}
-        <div className="flex flex-col lg:flex-row flex-1 h-full">
+        <div className="flex flex-col lg:flex-row flex-1 min-h-0">
           {/* Hero image panel */}
-          <div className="lg:w-1/2 h-52 sm:h-72 lg:h-full relative">
-            <HeroPanel isDark={isDark} />
+          <div className="lg:w-1/2 h-48 sm:h-72 lg:h-auto relative flex flex-col">
+            <div className="flex-1 w-full h-full min-h-[400px]">
+              <HeroPanel isDark={isDark} />
+            </div>
           </div>
 
           {/* Content panel */}
