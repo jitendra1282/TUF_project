@@ -94,7 +94,7 @@ function CalendarInner() {
     const onMove = (moveEvent) => {
       const currentY = moveEvent.clientY || moveEvent.touches?.[0]?.clientY;
       const deltaY = startY - currentY;
-      const newHeight = Math.max(120, Math.min(startHeight + deltaY, window.innerHeight * 0.5));
+      const newHeight = Math.max(window.innerHeight * 0.25, Math.min(startHeight + deltaY, window.innerHeight * 0.5));
       notesHeightRef.current = newHeight;
       if (notesContainerRef.current) {
         notesContainerRef.current.style.height = `${newHeight}px`;
