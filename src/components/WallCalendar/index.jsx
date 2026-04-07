@@ -29,6 +29,8 @@ import { NotesPanel } from './components/NotesPanel';
 import { ThemeSwitcher } from './components/ThemeSwitcher';
 import { ExportButton } from './components/ExportButton';
 
+import logoImg from '../../assets/logo.png';
+
 // ─── Theme util ───────────────────────────────────────────────────────────────
 function useIsDark(theme) {
   const systemDark = useMemo(() => {
@@ -125,11 +127,12 @@ function CalendarInner() {
         isDark ? 'bg-[#1e2025]' : 'bg-white'
       }`}>
         <div
-          className={`text-sm lg:text-base font-black tracking-widest uppercase ${
+          className={`text-sm lg:text-base font-black tracking-widest uppercase flex items-center gap-2 ${
             isDark ? 'text-slate-400' : 'text-gray-500'
           }`}
         >
-          📅 Jitendra's Calendar
+          <img src={logoImg} alt="App Logo" className="w-6 h-6 sm:w-7 sm:h-7 object-contain drop-shadow-sm" />
+          Jitendra's Calendar
         </div>
         <div className="flex items-center gap-2">
           <ExportButton isDark={isDark} />
