@@ -114,7 +114,7 @@ function CalendarInner() {
 
   return (
     <div
-      className={`min-h-screen w-full flex flex-col transition-colors duration-400 ${
+      className={`h-screen h-[100dvh] w-full flex flex-col overflow-hidden transition-colors duration-400 ${
         isDark
           ? 'bg-[#181a1f] text-slate-100'
           : 'bg-[#f0f9ff] text-gray-800'
