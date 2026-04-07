@@ -59,9 +59,9 @@ function MonthNote({ isDark }) {
   const monthName = MONTH_CONFIG[currentMonth].month;
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 h-full">
       <textarea
-        className={`notes-textarea lined-paper w-full resize-none text-sm p-3 rounded-xl border transition-all ${
+        className={`notes-textarea lined-paper w-full flex-1 resize-none text-sm p-3 rounded-xl border transition-all ${
           isDark
             ? 'bg-slate-800/80 border-slate-700 text-slate-200 placeholder-slate-500'
             : 'bg-white/80 border-gray-200 text-gray-700 placeholder-gray-400'
@@ -107,7 +107,7 @@ function RangeNote({ isDark }) {
   const rangeLabel = `${formatDisplayDate(rangeStart)} – ${formatDisplayDate(rangeEnd)}`;
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 h-full">
       <div className={`text-xs font-bold px-3 py-1.5 rounded-lg inline-flex items-center gap-1.5 w-fit ${
         isDark ? 'bg-sky-900/40 text-sky-300' : 'bg-sky-50 text-sky-700'
       }`}>
@@ -115,7 +115,7 @@ function RangeNote({ isDark }) {
         {rangeLabel}
       </div>
       <textarea
-        className={`notes-textarea lined-paper w-full resize-none text-sm p-3 rounded-xl border transition-all ${
+        className={`notes-textarea lined-paper w-full flex-1 resize-none text-sm p-3 rounded-xl border transition-all ${
           isDark
             ? 'bg-slate-800/80 border-slate-700 text-slate-200 placeholder-slate-500'
             : 'bg-white/80 border-gray-200 text-gray-700 placeholder-gray-400'
@@ -146,7 +146,7 @@ export function NotesPanel({ isDark }) {
   const hasRange = isValidRange(rangeStart, rangeEnd);
 
   return (
-    <div className={`border-t px-4 py-3 ${isDark ? 'border-slate-700' : 'border-gray-100'}`}>
+    <div className={`flex flex-col h-full border-t px-4 py-3 ${isDark ? 'border-slate-700' : 'border-gray-100'}`}>
       {/* Tab bar */}
       <div className="flex gap-1 mb-3" role="tablist" aria-label="Notes tabs">
         <TabButton
@@ -173,6 +173,7 @@ export function NotesPanel({ isDark }) {
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
           key={activeNotesTab}
+          className="flex flex-col flex-1 min-h-0"
           initial={{ x: activeNotesTab === 'range' ? 20 : -20, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: activeNotesTab === 'range' ? -20 : 20, opacity: 0 }}

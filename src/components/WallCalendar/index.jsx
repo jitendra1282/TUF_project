@@ -80,6 +80,38 @@ function CalendarInner() {
   const handleSwipeRight = useCallback(() => dispatch({ type: ACTIONS.PREV_MONTH }), [dispatch]);
   const { onTouchStart, onTouchEnd } = useSwipe(handleSwipeLeft, handleSwipeRight);
 
+  // ─── Resizable Notes Panel Logic ───
+  const notesContainerRef = useRef(null);
+  const notesHeightRef = useRef(250);
+
+  const startDrag = useCallback((e) => {
+    e.preventDefault();
+    const startY = e.clientY || e.touches?.[0]?.clientY;
+    const startHeight = notesHeightRef.current;
+
+    const onMove = (moveEvent) => {
+      const currentY = moveEvent.clientY || moveEvent.touches?.[0]?.clientY;
+      const deltaY = startY - currentY;
+      const newHeight = Math.max(120, Math.min(startHeight + deltaY, window.innerHeight * 0.7));
+      notesHeightRef.current = newHeight;
+      if (notesContainerRef.current) {
+        notesContainerRef.current.style.height = `${newHeight}px`;
+      }
+    };
+
+    const onUp = () => {
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onUp);
+      document.removeEventListener('touchmove', onMove);
+      document.removeEventListener('touchend', onUp);
+    };
+
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+    document.addEventListener('touchmove', onMove, { passive: false });
+    document.addEventListener('touchend', onUp);
+  }, []);
+
   return (
     <div
       className={`min-h-screen w-full flex flex-col transition-colors duration-400 ${
@@ -136,7 +168,27 @@ function CalendarInner() {
             </div>
 
             <DateGrid isDark={isDark} />
-            <NotesPanel isDark={isDark} />
+            {/* Resizer Handle */}
+            <div
+              className={`h-4 w-full cursor-ns-resize flex flex-col items-center justify-center transition-colors select-none ${
+                isDark ? 'hover:bg-slate-800 border-t border-slate-700/60' : 'hover:bg-gray-100 border-t border-gray-100'
+              }`}
+              onMouseDown={startDrag}
+              onTouchStart={startDrag}
+              role="separator"
+              aria-orientation="horizontal"
+              title="Drag to resize notes panel"
+            >
+              <div className={`w-8 h-1 rounded-full ${isDark ? 'bg-slate-600' : 'bg-gray-300'}`} />
+            </div>
+
+            <div
+              ref={notesContainerRef}
+              style={{ height: '250px' }}
+              className="flex flex-col min-h-[120px]"
+            >
+              <NotesPanel isDark={isDark} />
+            </div>
           </div>
         </div>
       </div>
