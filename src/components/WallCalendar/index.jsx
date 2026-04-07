@@ -154,7 +154,7 @@ function CalendarInner() {
 
           {/* Content panel */}
           <div
-            className={`lg:w-1/2 flex flex-col border-t lg:border-t-0 lg:border-l relative z-10 ${
+            className={`lg:w-1/2 flex flex-col min-h-0 border-t lg:border-t-0 lg:border-l relative z-10 ${
               isDark 
                 ? 'bg-[#1a1d21] border-slate-700/60' 
                 : 'bg-white border-slate-200'

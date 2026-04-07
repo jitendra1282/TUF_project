@@ -278,7 +278,7 @@ export function DateGrid({ isDark }) {
 
   return (
     <div 
-      className="flex-1 px-2 pb-3 overflow-hidden flex flex-col" 
+      className="flex-1 px-2 pb-3 overflow-hidden flex flex-col min-h-0" 
       onDoubleClick={() => dispatch({ type: ACTIONS.CLEAR_SELECTION })}
     >
       <WeekdayHeaders isDark={isDark} />
