@@ -61,12 +61,12 @@ export function ExportButton({ isDark }) {
         onClick={handleCopy}
         whileHover={{ scale: 1.03, y: -1 }}
         whileTap={{ scale: 0.97 }}
-        className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold transition-all shadow-sm hover:shadow-md ${
+        className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
           copied
-            ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/30'
+            ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/50'
             : isDark
-            ? 'glass-premium-dark text-slate-200'
-            : 'glass-premium-light text-gray-600 hover:text-sky-600'
+            ? 'bg-transparent text-slate-200 border border-slate-600/60 hover:bg-slate-800'
+            : 'bg-transparent text-gray-700 border border-gray-300 hover:bg-gray-100'
         }`}
         aria-label="Copy calendar summary to clipboard"
       >

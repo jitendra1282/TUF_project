@@ -82,17 +82,19 @@ function CalendarInner() {
 
   return (
     <div
-      className={`min-h-screen flex flex-col items-center justify-start py-6 sm:py-8 px-3 sm:px-4 transition-colors duration-400 ${
+      className={`min-h-screen w-full flex flex-col transition-colors duration-400 ${
         isDark
-          ? 'bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-100'
-          : 'bg-gradient-to-br from-[#f8fafc] via-[#f0f9ff] to-[#f8fafc] text-gray-800'
+          ? 'bg-[#181a1f] text-slate-100'
+          : 'bg-[#f0f9ff] text-gray-800'
       }`}
     >
       {/* ── Top toolbar ── */}
-      <div className="w-full max-w-4xl flex items-center justify-between mb-3 px-1">
+      <div className={`w-full flex items-center justify-between p-3 lg:px-6 shadow-sm z-20 relative ${
+        isDark ? 'bg-[#1e2025]' : 'bg-white'
+      }`}>
         <div
-          className={`text-xs sm:text-sm font-black tracking-widest uppercase ${
-            isDark ? 'text-slate-500' : 'text-gray-400'
+          className={`text-sm lg:text-base font-black tracking-widest uppercase ${
+            isDark ? 'text-slate-400' : 'text-gray-500'
           }`}
         >
           📅 Wall Calendar
@@ -103,39 +105,30 @@ function CalendarInner() {
         </div>
       </div>
 
-      {/* ── Calendar card ── */}
+      {/* ── Calendar card (Full Screen Flex) ── */}
       <div
-        className={`w-full max-w-4xl rounded-2xl overflow-hidden transition-all duration-400 ${
-          isDark 
-            ? 'bg-slate-800/95 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5)] border border-white/5' 
-            : 'bg-white shadow-[0_20px_50px_-12px_rgba(14,165,233,0.15),0_0_0_1px_rgba(14,165,233,0.05)]'
-        }`}
+        className="w-full flex-1 flex flex-col overflow-hidden"
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
       >
-        {/* Spiral binding strip */}
-        <div className={`${isDark ? 'bg-slate-700' : 'bg-gray-100'} rounded-t-2xl`}>
-          <SpiralBinding isDark={isDark} />
-        </div>
-
         {/* Main: hero left + content right */}
-        <div className="flex flex-col lg:flex-row">
+        <div className="flex flex-col lg:flex-row flex-1 h-full">
           {/* Hero image panel */}
-          <div className="lg:w-[55%] h-52 sm:h-72 lg:h-auto lg:min-h-[520px] relative">
+          <div className="lg:w-1/2 h-52 sm:h-72 lg:h-full relative">
             <HeroPanel isDark={isDark} />
           </div>
 
           {/* Content panel */}
           <div
-            className={`lg:w-[45%] flex flex-col border-t lg:border-t-0 lg:border-l relative z-10 ${
+            className={`lg:w-1/2 flex flex-col border-t lg:border-t-0 lg:border-l relative z-10 ${
               isDark 
-                ? 'border-slate-700/60 shadow-[-4px_0_12px_-4px_rgba(0,0,0,0.2)]' 
-                : 'border-slate-100 shadow-[-4px_0_12px_-4px_rgba(0,0,0,0.05)]'
+                ? 'bg-[#1a1d21] border-slate-700/60' 
+                : 'bg-white border-slate-200'
             }`}
           >
             {/* Sticky on mobile so month nav stays visible when scrolling grid */}
             <div
-              className={`lg:static sticky top-0 z-10 ${isDark ? 'bg-slate-800' : 'bg-white'}`}
+              className={`lg:static sticky top-0 z-10 ${isDark ? 'bg-transparent' : 'bg-transparent'}`}
             >
               <MonthNavigation isDark={isDark} />
             </div>
