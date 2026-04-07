@@ -61,6 +61,7 @@ export const ACTIONS = {
   CLEAR_HOVER: 'CLEAR_HOVER',
   SET_MONTH_NOTE: 'SET_MONTH_NOTE', // { key, value }
   SET_RANGE_NOTE: 'SET_RANGE_NOTE', // { key, value }
+  CLEAR_SELECTION: 'CLEAR_SELECTION',
   SWITCH_TAB: 'SWITCH_TAB',        // { tab }
   SET_THEME: 'SET_THEME',          // { theme }
   SET_CUSTOM_HOLIDAYS: 'SET_CUSTOM_HOLIDAYS', // { holidays }
@@ -133,6 +134,23 @@ function calendarReducer(state, action) {
         };
       } else {
         // Phase → 2: finalize range (auto-swap if end < start)
+        const isSameSelection = rangeStart && 
+          rangeStart.getFullYear() === date.getFullYear() && 
+          rangeStart.getMonth() === date.getMonth() && 
+          rangeStart.getDate() === date.getDate();
+        
+        if (isSameSelection) {
+          // Double-click toggle behavior: unselect the date instead of making a 1-day range
+          return {
+            ...state,
+            rangeStart: null,
+            rangeEnd: null,
+            hoverDate: null,
+            clickPhase: 0,
+            activeNotesTab: 'month',
+          };
+        }
+
         const [start, end] = orderRange(rangeStart, date);
         return {
           ...state,
@@ -159,6 +177,15 @@ function calendarReducer(state, action) {
       storageSet('wc_rangeNotes', notes);
       return { ...state, rangeNotes: notes };
     }
+    case ACTIONS.CLEAR_SELECTION:
+      return {
+        ...state,
+        rangeStart: null,
+        rangeEnd: null,
+        hoverDate: null,
+        clickPhase: 0,
+        activeNotesTab: 'month',
+      };
     case ACTIONS.SWITCH_TAB:
       return { ...state, activeNotesTab: action.payload.tab };
     case ACTIONS.SET_THEME: {

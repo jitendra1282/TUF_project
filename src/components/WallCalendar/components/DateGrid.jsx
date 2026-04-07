@@ -277,7 +277,10 @@ export function DateGrid({ isDark }) {
   );
 
   return (
-    <div className="flex-1 px-2 pb-3 overflow-hidden">
+    <div 
+      className="flex-1 px-2 pb-3 overflow-hidden" 
+      onDoubleClick={() => dispatch({ type: ACTIONS.CLEAR_SELECTION })}
+    >
       <WeekdayHeaders isDark={isDark} />
 
       <AnimatePresence mode="wait" initial={false}>
