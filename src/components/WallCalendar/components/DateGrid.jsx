@@ -157,7 +157,7 @@ const DayCell = memo(function DayCell({
 
   return (
     <motion.div
-      className={`group day-cell relative flex flex-col items-center justify-center min-h-[44px]
+      className={`group day-cell relative flex flex-col items-center justify-center h-full min-h-0
         select-none ${inMonth ? 'cursor-pointer day-cell-glow' : 'cursor-default pointer-events-none'}
         transition-shadow duration-150`}
       style={{ touchAction: 'manipulation' }}
@@ -278,7 +278,7 @@ export function DateGrid({ isDark }) {
 
   return (
     <div 
-      className="flex-1 px-2 pb-3 overflow-hidden" 
+      className="flex-1 px-2 pb-3 overflow-hidden flex flex-col" 
       onDoubleClick={() => dispatch({ type: ACTIONS.CLEAR_SELECTION })}
     >
       <WeekdayHeaders isDark={isDark} />
@@ -286,17 +286,18 @@ export function DateGrid({ isDark }) {
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
           key={`${currentYear}-${currentMonth}`}
+          className="flex-1 flex flex-col min-h-0"
           initial={{ x: animationDirection === 'next' ? 60 : -60, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: animationDirection === 'next' ? -60 : 60, opacity: 0 }}
           transition={{ duration: 0.35, ease: 'easeInOut' }}
         >
           {weeks.map((week, wi) => (
-            <div key={wi} className="grid grid-cols-8">
+            <div key={wi} className="grid grid-cols-8 flex-1 min-h-0">
               {/* ISO Week number */}
               <div
                 className={`flex items-center justify-center text-[9px] font-bold
-                  tracking-wider min-h-[44px] transition-colors duration-150 ${
+                  tracking-wider h-full transition-colors duration-150 ${
                   isDark ? 'text-slate-700' : 'text-gray-200'
                 }`}
                 aria-label={`Week ${week[0].weekNum}`}
