@@ -26,7 +26,6 @@ import { HeroPanel } from './components/HeroPanel';
 import { MonthNavigation } from './components/MonthNavigation';
 import { DateGrid } from './components/DateGrid';
 import { NotesPanel } from './components/NotesPanel';
-import { MiniMonthPreviews } from './components/MiniMonthPreview';
 import { ThemeSwitcher } from './components/ThemeSwitcher';
 import { ExportButton } from './components/ExportButton';
 
@@ -147,22 +146,13 @@ function CalendarInner() {
         </div>
       </div>
 
-      {/* Mini month previews */}
-      <div className="w-full max-w-4xl">
-        <MiniMonthPreviews
-          currentYear={currentYear}
-          currentMonth={currentMonth}
-          isDark={isDark}
-        />
-      </div>
-
       {/* Usage hint */}
       <div
         className={`mt-5 text-[11px] font-medium text-center ${
           isDark ? 'text-slate-600' : 'text-gray-400'
         }`}
       >
-        Click a date to start · Click a second to complete range · Click a third to reset
+        Click a date to start · Click it again to deselect
         <span className="ml-2 hidden sm:inline">· Swipe to change month on mobile</span>
       </div>
     </div>
