@@ -84,6 +84,14 @@ export function HeroPanel({ isDark }) {
   // imageKey drives the AnimatePresence crossfade
   const [imageKey, setImageKey] = useState(currentMonth);
 
+  // Preload all 12 images in the background on mount to eliminate network latency
+  useEffect(() => {
+    MONTH_CONFIG.forEach(config => {
+      const img = new window.Image();
+      img.src = config.image;
+    });
+  }, []);
+
   useEffect(() => {
     setImageKey(currentMonth);
   }, [currentMonth]);
@@ -91,14 +99,14 @@ export function HeroPanel({ isDark }) {
   return (
     <div className="relative w-full h-full overflow-hidden rounded-tl-2xl rounded-bl-2xl md:rounded-tr-none md:rounded-bl-2xl">
       {/* Hero image with crossfade */}
-      <AnimatePresence mode="wait">
+      <AnimatePresence>
         <motion.div
           key={imageKey}
           className="absolute inset-0"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.6, ease: 'easeInOut' }}
+          transition={{ duration: 0.35, ease: 'easeOut' }}
         >
           <HeroImage config={config} monthIndex={currentMonth} priority={currentMonth === new Date().getMonth()} />
         </motion.div>
