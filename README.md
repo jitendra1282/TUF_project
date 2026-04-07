@@ -5,7 +5,7 @@ A beautifully designed, fully interactive wall calendar web component built as p
 ---
 
 ## 🚀 Live Demo
-[Live Demo Link (Vercel/Netlify Placeholder)](#)
+[https://tuf-project-five.vercel.app/](https://tuf-project-five.vercel.app/)
 
 ## 🎥 Demo Video
 [Video Link (Loom/YouTube Placeholder)](#)
