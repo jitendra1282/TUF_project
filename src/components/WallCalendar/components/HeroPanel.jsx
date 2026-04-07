@@ -105,7 +105,7 @@ export function HeroPanel({ isDark }) {
           className="absolute inset-0"
           initial={{ opacity: 0, zIndex: 10 }}
           animate={{ opacity: 1, zIndex: 10 }}
-          exit={{ opacity: 1, zIndex: 0 }}
+          exit={{ opacity: 0.99, zIndex: 0 }}
           transition={{ duration: 0.35, ease: 'easeOut' }}
         >
           <HeroImage config={config} monthIndex={currentMonth} priority={currentMonth === new Date().getMonth()} />
