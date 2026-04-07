@@ -44,6 +44,25 @@ A beautifully designed, fully interactive wall calendar web component built as p
 
 ---
 
+## 🪝 React Hooks Architecture
+
+The project relies heavily on robust modern React paradigms to ensure peak performance without unnecessary DOM painting:
+
+### Built-in Hooks
+- **`useReducer`:** Acts as the brain of the application (`CalendarContext.jsx`), centralizing complex date logic, boundary constraints, and selection states away from UI components.
+- **`useMemo`:** Heavily guards expensive calculations—like evaluating 6-week month boundary matrices (`buildCalendarGrid`)—so the grid doesn't recalculate when users type inside notes.
+- **`useCallback`:** Memoizes heavy event listeners like touch-swipes and 60fps frame drags to prevent breaking memoized child components.
+- **`useRef`:** Put to extreme use bypassing the React rendering tree to make direct `style.height` DOM manipulations during the Split-Pane dragging events, preventing the application from dragging sluggishly. Also used as a rapid-fire double-click guard.
+- **`useContext`:** Used to distribute calendar data globally, completely avoiding prop-drilling.
+- **`useEffect`:** Handles background background-image preloading caching and synchronizing the `.dark` class directly into the HTML root element.
+
+### Custom Hooks
+- **`useCalendar()`:** A strict context accessor wrapping that ensures safe payload deployments.
+- **`useSwipe()`:** A custom utility tracking `onTouchStart` and `onTouchEnd` tracking X-axis deltas to fire native mobile swiping events.
+- **`useIsDark()`:** Intercepts system media-queries (`prefers-color-scheme: dark`) and reconciles them with the user's manual override choice.
+
+---
+
 ## ⚙️ Installation & Setup
 
 1. **Clone the repository**
