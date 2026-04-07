@@ -129,7 +129,7 @@ function CalendarInner() {
             isDark ? 'text-slate-400' : 'text-gray-500'
           }`}
         >
-          📅 Wall Calendar
+          📅 Jitendra's Calendar
         </div>
         <div className="flex items-center gap-2">
           <ExportButton isDark={isDark} />
