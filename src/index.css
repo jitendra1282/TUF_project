@@ -90,12 +90,14 @@ body {
   z-index: 5;
 }
 
-/* ── Select reset ───────────────────────────────────────────────── */
+/* ── Select reset — fully suppress native arrow on all browsers ─── */
 select {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  background-image: none;
+  background-image: none !important;
+  /* Prevent native arrow bleed-through on macOS/Safari during change */
+  background-clip: padding-box;
 }
 
 /* ── User select control ────────────────────────────────────────── */
@@ -217,3 +219,41 @@ select {
 }
 
 .dark .range-connector-left::before { background: rgba(14,165,233,0.2); }
+
+/* ── Seasonal weather animations ──────────────────────────────────────────── */
+@keyframes s-rain {
+  0%   { transform: translateY(-30px); opacity: 0; }
+  6%   { opacity: 1; }
+  94%  { opacity: 0.7; }
+  100% { transform: translateY(110vh); opacity: 0; }
+}
+
+@keyframes s-snow {
+  0%   { transform: translateY(-20px) translateX(0) rotate(0deg); opacity: 0; }
+  8%   { opacity: 1; }
+  50%  { transform: translateY(50vh) translateX(var(--s-drift, 20px)) rotate(180deg); }
+  94%  { opacity: 0.8; }
+  100% { transform: translateY(110vh) translateX(0) rotate(360deg); opacity: 0; }
+}
+
+@keyframes s-petal {
+  0%   { transform: translateY(-30px) translateX(0) rotate(0deg); opacity: 0; }
+  6%   { opacity: 0.9; }
+  50%  { transform: translateY(50vh) translateX(var(--s-drift, 30px)) rotate(360deg); }
+  94%  { opacity: 0.5; }
+  100% { transform: translateY(110vh) translateX(0) rotate(720deg); opacity: 0; }
+}
+
+@keyframes s-leaf {
+  0%   { transform: translateY(-40px) translateX(0) rotate(0deg); opacity: 0; }
+  6%   { opacity: 1; }
+  35%  { transform: translateY(35vh) translateX(var(--s-drift, 50px)) rotate(260deg); }
+  65%  { transform: translateY(65vh) translateX(0) rotate(500deg); }
+  94%  { opacity: 0.8; }
+  100% { transform: translateY(110vh) translateX(calc(var(--s-drift, 50px) * -0.4)) rotate(720deg); opacity: 0; }
+}
+
+@keyframes s-lightning {
+  0%, 86%, 90%, 100% { opacity: 0; }
+  88% { opacity: 0.55; }
+}

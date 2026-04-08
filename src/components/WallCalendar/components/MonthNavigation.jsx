@@ -9,6 +9,24 @@ import { useCalendar, ACTIONS } from '../context/CalendarContext';
 
 const YEARS = Array.from({ length: 51 }, (_, i) => 2000 + i); // 2000–2050
 
+/** Thin wrapper that suppresses the native select arrow and shows a custom one. */
+function SelectWrapper({ children, isDark, maxWidth }) {
+  return (
+    <div className="relative inline-flex items-center" style={{ maxWidth }}>
+      {children}
+      {/* Custom chevron — pointer-events-none so clicks pass through to the select */}
+      <span
+        className={`pointer-events-none absolute right-1 top-1/2 -translate-y-1/2 text-[8px] leading-none ${
+          isDark ? 'text-slate-400' : 'text-gray-400'
+        }`}
+        aria-hidden="true"
+      >
+        ▾
+      </span>
+    </div>
+  );
+}
+
 export const MonthNavigation = memo(function MonthNavigation({ isDark }) {
   const { state, dispatch } = useCalendar();
   const { currentYear, currentMonth } = state;
@@ -43,7 +61,7 @@ export const MonthNavigation = memo(function MonthNavigation({ isDark }) {
     [dispatch, currentMonth],
   );
 
-  const selectBase = `text-xs font-bold rounded-lg px-1 py-1 border-0 outline-none focus:ring-2 focus:ring-sky-400 appearance-none cursor-pointer transition-all ${
+  const selectBase = `w-full text-xs font-bold rounded-lg pl-1 pr-4 py-1 border-0 outline-none focus:ring-2 focus:ring-sky-400 cursor-pointer transition-all ${
     isDark
       ? 'glass-premium-dark text-slate-200 hover:bg-slate-700/80 shadow-sm'
       : 'glass-premium-light text-gray-700 hover:bg-sky-50 shadow-sm'
@@ -73,30 +91,32 @@ export const MonthNavigation = memo(function MonthNavigation({ isDark }) {
       {/* Centre: month dropdown + year dropdown */}
       <div className="flex flex-col items-center gap-0.5">
         {/* Year — small text above */}
-        <select
-          value={currentYear}
-          onChange={handleYearChange}
-          className={`${selectBase} text-[11px] tracking-widest text-center`}
-          aria-label="Select year"
-          style={{ maxWidth: 70 }}
-        >
-          {YEARS.map((y) => (
-            <option key={y} value={y}>{y}</option>
-          ))}
-        </select>
+        <SelectWrapper isDark={isDark} maxWidth={70}>
+          <select
+            value={currentYear}
+            onChange={handleYearChange}
+            className={`${selectBase} text-[11px] tracking-widest text-center`}
+            aria-label="Select year"
+          >
+            {YEARS.map((y) => (
+              <option key={y} value={y}>{y}</option>
+            ))}
+          </select>
+        </SelectWrapper>
 
         {/* Month — large bold below */}
-        <select
-          value={currentMonth}
-          onChange={handleMonthChange}
-          className={`${selectBase} text-base font-black uppercase tracking-wide text-center`}
-          aria-label="Select month"
-          style={{ maxWidth: 130 }}
-        >
-          {MONTH_CONFIG.map((m, i) => (
-            <option key={m.month} value={i}>{m.month.toUpperCase()}</option>
-          ))}
-        </select>
+        <SelectWrapper isDark={isDark} maxWidth={130}>
+          <select
+            value={currentMonth}
+            onChange={handleMonthChange}
+            className={`${selectBase} text-base font-black uppercase tracking-wide text-center`}
+            aria-label="Select month"
+          >
+            {MONTH_CONFIG.map((m, i) => (
+              <option key={m.month} value={i}>{m.month.toUpperCase()}</option>
+            ))}
+          </select>
+        </SelectWrapper>
       </div>
 
       {/* Right: Today pill + Next arrow */}

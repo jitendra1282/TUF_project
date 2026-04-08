@@ -28,6 +28,7 @@ import { DateGrid } from './components/DateGrid';
 import { NotesPanel } from './components/NotesPanel';
 import { ThemeSwitcher } from './components/ThemeSwitcher';
 import { ExportButton } from './components/ExportButton';
+import { SeasonalBackground } from './components/SeasonalBackground';
 
 import logoImg from '../../assets/logo.png';
 
@@ -70,8 +71,13 @@ function useSwipe(onSwipeLeft, onSwipeRight) {
 // ─── Inner calendar ───────────────────────────────────────────────────────────
 function CalendarInner() {
   const { state, dispatch } = useCalendar();
-  const { theme, currentYear, currentMonth } = state;
+  const { theme, currentYear, currentMonth, weatherEnabled } = state;
   const isDark = useIsDark(theme);
+
+  const handleToggleWeather = useCallback(
+    () => dispatch({ type: ACTIONS.TOGGLE_WEATHER }),
+    [dispatch],
+  );
 
   // Apply dark class to <html>
   useEffect(() => {
@@ -116,15 +122,18 @@ function CalendarInner() {
 
   return (
     <div
-      className={`h-screen h-[100dvh] w-full flex flex-col overflow-hidden transition-colors duration-400 ${
-        isDark
-          ? 'bg-[#181a1f] text-slate-100'
-          : 'bg-[#f0f9ff] text-gray-800'
+      className={`h-screen h-[100dvh] w-full flex flex-col overflow-hidden relative ${
+        isDark ? 'text-slate-100' : 'text-gray-800'
       }`}
     >
+      {/* ── Seasonal animated background ── */}
+      {weatherEnabled && <SeasonalBackground month={currentMonth} isDark={isDark} />}
+
       {/* ── Top toolbar ── */}
       <div className={`w-full flex items-center justify-between p-3 lg:px-6 shadow-sm z-20 relative ${
-        isDark ? 'bg-[#1e2025]' : 'bg-white'
+        isDark
+          ? 'bg-[#1e2025]/80 backdrop-blur-md border-b border-white/5'
+          : 'bg-white/80 backdrop-blur-md border-b border-black/5'
       }`}>
         <div
           className={`text-sm lg:text-base font-black tracking-widest uppercase flex items-center gap-2 ${
@@ -135,6 +144,26 @@ function CalendarInner() {
           Jitendra's Calendar
         </div>
         <div className="flex items-center gap-2">
+          {/* Weather effects toggle — before Copy Summary */}
+          <button
+            id="weather-toggle-btn"
+            onClick={handleToggleWeather}
+            title={weatherEnabled ? 'Stop weather effects' : 'Start weather effects'}
+            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-bold transition-all shadow-sm ${
+              weatherEnabled
+                ? isDark
+                  ? 'bg-sky-500/20 text-sky-300 hover:bg-sky-500/30 border border-sky-500/30'
+                  : 'bg-sky-100 text-sky-600 hover:bg-sky-200 border border-sky-200'
+                : isDark
+                  ? 'glass-premium-dark text-slate-400 hover:text-slate-200'
+                  : 'glass-premium-light text-gray-400 hover:text-gray-600'
+            }`}
+            aria-label={weatherEnabled ? 'Disable weather effects' : 'Enable weather effects'}
+            aria-pressed={weatherEnabled}
+          >
+            <span className="text-sm leading-none">{weatherEnabled ? '🌤️' : '⛅'}</span>
+            <span className="hidden sm:inline">{weatherEnabled ? 'Stop Effects' : 'Effects Off'}</span>
+          </button>
           <ExportButton isDark={isDark} />
           <ThemeSwitcher isDark={isDark} />
         </div>
@@ -158,9 +187,9 @@ function CalendarInner() {
           {/* Content panel */}
           <div
             className={`lg:w-1/2 flex flex-col min-h-0 border-t lg:border-t-0 lg:border-l relative z-10 ${
-              isDark 
-                ? 'bg-[#1a1d21] border-slate-700/60' 
-                : 'bg-white border-slate-200'
+              isDark
+                ? 'bg-[#1a1d21]/92 border-slate-700/60 backdrop-blur-sm'
+                : 'bg-white/92 border-slate-200 backdrop-blur-sm'
             }`}
           >
             {/* Sticky on mobile so month nav stays visible when scrolling grid */}

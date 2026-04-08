@@ -43,6 +43,7 @@ function buildInitialState(overrides = {}) {
     rangeNotes: storageGet('wc_rangeNotes', {}),
     activeNotesTab: 'month',
     theme: storageGet('wc_theme', 'auto'),
+    weatherEnabled: storageGet('wc_weather', true),
     animationDirection: 'next',
     clickPhase: 0, // 0=none, 1=start picked, 2=range done
     customHolidays: overrides.customHolidays ?? {},
@@ -65,6 +66,7 @@ export const ACTIONS = {
   SWITCH_TAB: 'SWITCH_TAB',        // { tab }
   SET_THEME: 'SET_THEME',          // { theme }
   SET_CUSTOM_HOLIDAYS: 'SET_CUSTOM_HOLIDAYS', // { holidays }
+  TOGGLE_WEATHER: 'TOGGLE_WEATHER',
 };
 
 // ─── Reducer ──────────────────────────────────────────────────────────────────
@@ -194,6 +196,11 @@ function calendarReducer(state, action) {
     }
     case ACTIONS.SET_CUSTOM_HOLIDAYS:
       return { ...state, customHolidays: action.payload.holidays ?? {} };
+    case ACTIONS.TOGGLE_WEATHER: {
+      const next = !state.weatherEnabled;
+      storageSet('wc_weather', next);
+      return { ...state, weatherEnabled: next };
+    }
     default:
       return state;
   }

@@ -98,28 +98,41 @@ export function HeroPanel({ isDark }) {
 
   return (
     <div className="relative w-full h-full overflow-hidden rounded-tl-2xl rounded-bl-2xl md:rounded-tr-none md:rounded-bl-2xl">
-      {/* Hero image with crossfade */}
+
+      {/* ── Layer 1: Crossfading hero image + scrim (z:0→10) ── */}
       <AnimatePresence>
         <motion.div
           key={imageKey}
           className="absolute inset-0"
-          initial={{ opacity: 0, zIndex: 10 }}
-          animate={{ opacity: 1, zIndex: 10 }}
-          exit={{ opacity: 0.99, zIndex: 0 }}
+          style={{ zIndex: 10 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
           transition={{ duration: 0.35, ease: 'easeOut' }}
         >
           <HeroImage config={config} monthIndex={currentMonth} priority={currentMonth === new Date().getMonth()} />
+          {/* Dark scrim sits inside the image layer so it fades with it */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/40 pointer-events-none" />
         </motion.div>
       </AnimatePresence>
 
-      {/* Dark scrim gradient for contrast */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/40 pointer-events-none" />
+      {/* ── Layer 2: Geometric triangle overlay — always visible, fades on month change (z:20) ── */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={`overlay-${currentMonth}-${currentYear}`}
+          className="absolute inset-0 pointer-events-none"
+          style={{ zIndex: 20 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
+        >
+          <GeometricOverlay monthName={config.month} year={currentYear} />
+        </motion.div>
+      </AnimatePresence>
 
-      {/* Geometric overlay + month badge */}
-      <GeometricOverlay monthName={config.month} year={currentYear} />
-
-      {/* Photo caption tag */}
-      <div className="absolute top-3 left-3">
+      {/* ── Layer 3: Photo caption (z:30) ── */}
+      <div className="absolute top-3 left-3 pointer-events-none" style={{ zIndex: 30 }}>
         <span className="text-[10px] text-white/60 bg-black/25 px-2 py-0.5 rounded-full backdrop-blur-sm font-medium tracking-wide">
           {config.imageAlt}
         </span>
