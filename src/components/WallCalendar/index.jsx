@@ -182,26 +182,26 @@ function CalendarInner() {
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
       >
-        {/* Main: hero left + content right — row on lg+, column on mobile */}
-        <div className="flex flex-col lg:flex-row flex-1 min-h-0">
+        {/* Main row: hero left + content right — side-by-side at sm+ (covers landscape phones too) */}
+        <div className="flex flex-col sm:flex-row flex-1 min-h-0">
 
-          {/* Hero image panel — compact on mobile, full on desktop */}
-          <div className="lg:w-1/2 lg:h-auto relative flex-shrink-0" style={{ height: 'clamp(100px, 22vw, 200px)' }}>
-            <div className="w-full h-full" style={{ minHeight: 0 }}>
+          {/* Hero — full width in portrait, fixed slice in landscape/desktop */}
+          <div className="cal-hero-wrapper sm:w-2/5 lg:w-1/2 relative flex-shrink-0">
+            <div className="w-full h-full">
               <HeroPanel isDark={isDark} />
             </div>
           </div>
 
-          {/* Content panel — fills remaining height */}
+          {/* Content panel — fills remaining */}
           <div
-            className={`lg:w-1/2 flex flex-col flex-1 min-h-0 border-t lg:border-t-0 lg:border-l relative z-10 ${
+            className={`cal-content-panel sm:w-3/5 lg:w-1/2 flex flex-col flex-1 min-h-0 border-t sm:border-t-0 sm:border-l lg:border-l relative z-10 ${
               isDark
                 ? 'bg-[#1a1d21]/92 border-slate-700/60 backdrop-blur-sm'
                 : 'bg-white/92 border-slate-200 backdrop-blur-sm'
             }`}
           >
-            {/* Month nav — sticky on mobile */}
-            <div className={`lg:static sticky top-0 z-10 ${
+            {/* Month nav — sticky on mobile portrait, static in row layout */}
+            <div className={`sm:static sticky top-0 z-10 ${
               isDark ? 'bg-[#1a1d21]/95' : 'bg-white/95'
             } backdrop-blur-sm`}>
               <MonthNavigation isDark={isDark} />
@@ -226,10 +226,10 @@ function CalendarInner() {
               <div className={`w-10 h-1 rounded-full ${isDark ? 'bg-slate-600' : 'bg-gray-300'}`} />
             </div>
 
-            {/* Notes panel — responsive default height */}
+            {/* Notes panel */}
             <div
               ref={notesContainerRef}
-              className="flex flex-col flex-shrink-0"
+              className="cal-notes-container flex flex-col flex-shrink-0"
               style={{ height: typeof window !== 'undefined' && window.innerWidth < 640 ? '160px' : '220px' }}
             >
               <NotesPanel isDark={isDark} />

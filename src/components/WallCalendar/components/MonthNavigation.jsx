@@ -69,7 +69,7 @@ export const MonthNavigation = memo(function MonthNavigation({ isDark }) {
 
   return (
     <div
-      className={`flex items-center justify-between px-3 py-2 border-b ${
+      className={`cal-month-nav flex items-center justify-between px-3 py-2 border-b ${
         isDark ? 'border-slate-700' : 'border-gray-100'
       }`}
     >

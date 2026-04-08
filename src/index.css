@@ -64,6 +64,47 @@ button, select, a {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* ── Hero wrapper: column mode (portrait phone) ──────────────────────────── */
+.cal-hero-wrapper {
+  height: clamp(90px, 28vh, 200px); /* compact slice in portrait */
+  flex-shrink: 0;
+}
+
+/* Row mode (≥640px — landscape phone, tablet, desktop): hero is full height */
+@media (min-width: 640px) {
+  .cal-hero-wrapper {
+    height: auto !important; /* stretch to fill flex row height */
+  }
+}
+
+/* ── Landscape phone: extra compact layout ───────────────────────────────── */
+/* Targets phones held horizontally: narrow height, wider than portrait */
+@media (orientation: landscape) and (max-height: 520px) {
+  /* Notes panel: clip to a minimal height to give grid more room */
+  .cal-notes-container {
+    height: 110px !important;
+    min-height: 80px !important;
+  }
+
+  /* MonthNavigation: tighten padding */
+  .cal-month-nav {
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+  }
+
+  /* Shrink the large month dropdown text so nav is shorter */
+  .cal-month-nav select {
+    font-size: 0.75rem !important;
+    padding-top: 1px !important;
+    padding-bottom: 1px !important;
+  }
+
+  /* Resizer handle: slimmer in landscape */
+  .cal-content-panel [role="separator"] {
+    height: 12px !important;
+  }
+}
+
 
 /* ── Lined paper effect (Premium Soft) ────────────────────────────── */
 .lined-paper {
