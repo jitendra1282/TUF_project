@@ -90,7 +90,10 @@ function CalendarInner() {
 
   // ─── Resizable Notes Panel Logic ───
   const notesContainerRef = useRef(null);
-  const notesHeightRef = useRef(250);
+  // On mobile use a smaller default, on desktop 250px
+  const notesHeightRef = useRef(
+    typeof window !== 'undefined' && window.innerWidth < 640 ? 160 : 250
+  );
 
   const startDrag = useCallback((e) => {
     e.preventDefault();
@@ -100,7 +103,10 @@ function CalendarInner() {
     const onMove = (moveEvent) => {
       const currentY = moveEvent.clientY || moveEvent.touches?.[0]?.clientY;
       const deltaY = startY - currentY;
-      const newHeight = Math.max(window.innerHeight * 0.25, Math.min(startHeight + deltaY, window.innerHeight * 0.5));
+      const isMobile = window.innerWidth < 640;
+      const minH = isMobile ? window.innerHeight * 0.18 : window.innerHeight * 0.25;
+      const maxH = isMobile ? window.innerHeight * 0.45 : window.innerHeight * 0.5;
+      const newHeight = Math.max(minH, Math.min(startHeight + deltaY, maxH));
       notesHeightRef.current = newHeight;
       if (notesContainerRef.current) {
         notesContainerRef.current.style.height = `${newHeight}px`;
@@ -130,26 +136,27 @@ function CalendarInner() {
       {weatherEnabled && <SeasonalBackground month={currentMonth} isDark={isDark} />}
 
       {/* ── Top toolbar ── */}
-      <div className={`w-full flex items-center justify-between p-3 lg:px-6 shadow-sm z-20 relative ${
+      <div className={`w-full flex items-center justify-between px-3 py-2 shadow-sm z-20 relative ${
         isDark
           ? 'bg-[#1e2025]/80 backdrop-blur-md border-b border-white/5'
           : 'bg-white/80 backdrop-blur-md border-b border-black/5'
       }`}>
         <div
-          className={`text-sm lg:text-base font-black tracking-widest uppercase flex items-center gap-2 ${
+          className={`text-xs sm:text-sm lg:text-base font-black tracking-widest uppercase flex items-center gap-1.5 min-w-0 ${
             isDark ? 'text-slate-400' : 'text-gray-500'
           }`}
         >
-          <img src={logoImg} alt="App Logo" className="w-6 h-6 sm:w-7 sm:h-7 object-contain drop-shadow-sm" />
-          Jitendra's Calendar
+          <img src={logoImg} alt="App Logo" className="w-5 h-5 sm:w-6 sm:h-6 object-contain drop-shadow-sm flex-shrink-0" />
+          <span className="truncate hidden xs:block">Jitendra's Calendar</span>
+          <span className="truncate xs:hidden">Calendar</span>
         </div>
-        <div className="flex items-center gap-2">
-          {/* Weather effects toggle — before Copy Summary */}
+        <div className="flex items-center gap-1.5 flex-shrink-0">
+          {/* Weather toggle */}
           <button
             id="weather-toggle-btn"
             onClick={handleToggleWeather}
             title={weatherEnabled ? 'Stop weather effects' : 'Start weather effects'}
-            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-bold transition-all shadow-sm ${
+            className={`flex items-center gap-1 px-2 py-1.5 rounded-lg text-[11px] font-bold transition-all shadow-sm ${
               weatherEnabled
                 ? isDark
                   ? 'bg-sky-500/20 text-sky-300 hover:bg-sky-500/30 border border-sky-500/30'
@@ -175,34 +182,39 @@ function CalendarInner() {
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
       >
-        {/* Main: hero left + content right */}
+        {/* Main: hero left + content right — row on lg+, column on mobile */}
         <div className="flex flex-col lg:flex-row flex-1 min-h-0">
-          {/* Hero image panel */}
-          <div className="lg:w-1/2 h-48 sm:h-72 lg:h-auto relative flex flex-col">
-            <div className="flex-1 w-full h-full min-h-[400px]">
+
+          {/* Hero image panel — compact on mobile, full on desktop */}
+          <div className="lg:w-1/2 lg:h-auto relative flex-shrink-0" style={{ height: 'clamp(100px, 22vw, 200px)' }}>
+            <div className="w-full h-full" style={{ minHeight: 0 }}>
               <HeroPanel isDark={isDark} />
             </div>
           </div>
 
-          {/* Content panel */}
+          {/* Content panel — fills remaining height */}
           <div
-            className={`lg:w-1/2 flex flex-col min-h-0 border-t lg:border-t-0 lg:border-l relative z-10 ${
+            className={`lg:w-1/2 flex flex-col flex-1 min-h-0 border-t lg:border-t-0 lg:border-l relative z-10 ${
               isDark
                 ? 'bg-[#1a1d21]/92 border-slate-700/60 backdrop-blur-sm'
                 : 'bg-white/92 border-slate-200 backdrop-blur-sm'
             }`}
           >
-            {/* Sticky on mobile so month nav stays visible when scrolling grid */}
-            <div
-              className={`lg:static sticky top-0 z-10 ${isDark ? 'bg-transparent' : 'bg-transparent'}`}
-            >
+            {/* Month nav — sticky on mobile */}
+            <div className={`lg:static sticky top-0 z-10 ${
+              isDark ? 'bg-[#1a1d21]/95' : 'bg-white/95'
+            } backdrop-blur-sm`}>
               <MonthNavigation isDark={isDark} />
             </div>
 
-            <DateGrid isDark={isDark} />
-            {/* Resizer Handle */}
+            {/* Date grid — fills all available flex space */}
+            <div className="flex-1 min-h-0 overflow-hidden">
+              <DateGrid isDark={isDark} />
+            </div>
+
+            {/* Resizer handle */}
             <div
-              className={`h-4 w-full cursor-ns-resize flex flex-col items-center justify-center transition-colors select-none ${
+              className={`h-5 w-full cursor-ns-resize flex flex-col items-center justify-center transition-colors select-none touch-none ${
                 isDark ? 'hover:bg-slate-800 border-t border-slate-700/60' : 'hover:bg-gray-100 border-t border-gray-100'
               }`}
               onMouseDown={startDrag}
@@ -211,13 +223,14 @@ function CalendarInner() {
               aria-orientation="horizontal"
               title="Drag to resize notes panel"
             >
-              <div className={`w-8 h-1 rounded-full ${isDark ? 'bg-slate-600' : 'bg-gray-300'}`} />
+              <div className={`w-10 h-1 rounded-full ${isDark ? 'bg-slate-600' : 'bg-gray-300'}`} />
             </div>
 
+            {/* Notes panel — responsive default height */}
             <div
               ref={notesContainerRef}
-              style={{ height: '250px' }}
-              className="flex flex-col min-h-[120px]"
+              className="flex flex-col flex-shrink-0"
+              style={{ height: typeof window !== 'undefined' && window.innerWidth < 640 ? '160px' : '220px' }}
             >
               <NotesPanel isDark={isDark} />
             </div>
@@ -225,14 +238,13 @@ function CalendarInner() {
         </div>
       </div>
 
-      {/* Usage hint */}
+      {/* Usage hint — hidden on very small screens to save space */}
       <div
-        className={`mt-5 text-[11px] font-medium text-center ${
+        className={`hidden sm:block text-[11px] font-medium text-center py-1 ${
           isDark ? 'text-slate-600' : 'text-gray-400'
         }`}
       >
-        Click a date to start · Click it again to deselect
-        <span className="ml-2 hidden sm:inline">· Swipe to change month on mobile</span>
+        Tap a date to start · Tap again to deselect · Swipe to change month
       </div>
     </div>
   );

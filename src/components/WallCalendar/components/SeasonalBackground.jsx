@@ -12,6 +12,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 // ─── helpers ──────────────────────────────────────────────────────────────────
 const rnd = (min, max) => min + Math.random() * (max - min);
+// Fewer particles on small screens for performance
+const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
 
 // ─── Season data ─────────────────────────────────────────────────────────────
 export const SEASON_MAP = {
@@ -82,7 +84,7 @@ function Cloud({ x, y, scale = 1, opacity = 0.85, isDark, driftDelay = 0, forceW
 // ─── Rain ─────────────────────────────────────────────────────────────────────
 function RainEffect({ isDark }) {
   const drops = useMemo(() =>
-    Array.from({ length: 55 }, (_, i) => ({
+    Array.from({ length: isMobile ? 28 : 55 }, (_, i) => ({
       id: i,
       left: rnd(0, 100),
       delay: rnd(0, 2.5),
@@ -119,7 +121,7 @@ function RainEffect({ isDark }) {
 
 function SnowEffect({ isDark }) {
   const flakes = useMemo(() =>
-    Array.from({ length: 40 }, (_, i) => ({
+    Array.from({ length: isMobile ? 20 : 40 }, (_, i) => ({
       id: i,
       left: rnd(0, 100),
       delay: rnd(0, 7),
@@ -207,7 +209,7 @@ function SunEffect({ isDark }) {
 // ─── Spring Petals ────────────────────────────────────────────────────────────
 function PetalsEffect({ isDark }) {
   const petals = useMemo(() =>
-    Array.from({ length: 22 }, (_, i) => ({
+    Array.from({ length: isMobile ? 12 : 22 }, (_, i) => ({
       id: i,
       left: rnd(0, 100),
       delay: rnd(0, 9),
@@ -242,7 +244,7 @@ function PetalsEffect({ isDark }) {
 // ─── Autumn Leaves ────────────────────────────────────────────────────────────
 function LeavesEffect({ isDark }) {
   const leaves = useMemo(() =>
-    Array.from({ length: 16 }, (_, i) => ({
+    Array.from({ length: isMobile ? 8 : 16 }, (_, i) => ({
       id: i,
       left: rnd(0, 100),
       delay: rnd(0, 8),
