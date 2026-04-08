@@ -8,7 +8,7 @@ A beautifully designed, fully interactive wall calendar web component built as p
 [https://tuf-project-five.vercel.app/](https://tuf-project-five.vercel.app/)
 
 ## 🎥 Demo Video
-[Video Link (Loom/YouTube Placeholder)](#)
+[Google Drive Demo Video](https://drive.google.com/drive/folders/1hzJdxRuamKhIJo9BJu3bXUTCL_-fTUyv?usp=sharing)
 
 ---
 
