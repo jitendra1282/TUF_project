@@ -88,24 +88,34 @@ function CalendarInner() {
   const handleSwipeRight = useCallback(() => dispatch({ type: ACTIONS.PREV_MONTH }), [dispatch]);
   const { onTouchStart, onTouchEnd } = useSwipe(handleSwipeLeft, handleSwipeRight);
 
-  // ─── Resizable Notes Panel Logic ───
+  // ─── Resizable Notes Panel ───────────────────────────────────────────────────
   const notesContainerRef = useRef(null);
-  // On mobile use a smaller default, on desktop 250px
-  const notesHeightRef = useRef(
-    typeof window !== 'undefined' && window.innerWidth < 640 ? 160 : 250
-  );
+  const notesHeightRef = useRef(null); // null = let CSS set first render
 
   const startDrag = useCallback((e) => {
     e.preventDefault();
-    const startY = e.clientY || e.touches?.[0]?.clientY;
-    const startHeight = notesHeightRef.current;
+    const startY = e.clientY ?? e.touches?.[0]?.clientY ?? 0;
+    // Always read the ACTUAL rendered height so first drag is correct
+    const startHeight = notesContainerRef.current
+      ? notesContainerRef.current.offsetHeight
+      : (notesHeightRef.current ?? 180);
 
     const onMove = (moveEvent) => {
-      const currentY = moveEvent.clientY || moveEvent.touches?.[0]?.clientY;
+      const currentY = moveEvent.clientY ?? moveEvent.touches?.[0]?.clientY ?? startY;
       const deltaY = startY - currentY;
-      const isMobile = window.innerWidth < 640;
-      const minH = isMobile ? window.innerHeight * 0.18 : window.innerHeight * 0.25;
-      const maxH = isMobile ? window.innerHeight * 0.45 : window.innerHeight * 0.5;
+      const isLandscape = window.innerWidth > window.innerHeight;
+      const isMobile = window.innerWidth < 768;
+      // Landscape phone: smaller range; portrait phone: medium; desktop: larger
+      const minH = (isMobile && isLandscape)
+        ? 75
+        : isMobile
+          ? Math.round(window.innerHeight * 0.18)
+          : Math.round(window.innerHeight * 0.2);
+      const maxH = (isMobile && isLandscape)
+        ? Math.round(window.innerHeight * 0.65)
+        : isMobile
+          ? Math.round(window.innerHeight * 0.5)
+          : Math.round(window.innerHeight * 0.55);
       const newHeight = Math.max(minH, Math.min(startHeight + deltaY, maxH));
       notesHeightRef.current = newHeight;
       if (notesContainerRef.current) {
@@ -212,10 +222,10 @@ function CalendarInner() {
               <DateGrid isDark={isDark} />
             </div>
 
-            {/* Resizer handle */}
+            {/* Resizer handle — h-7 gives a comfortable 28px touch target */}
             <div
-              className={`h-5 w-full cursor-ns-resize flex flex-col items-center justify-center transition-colors select-none touch-none ${
-                isDark ? 'hover:bg-slate-800 border-t border-slate-700/60' : 'hover:bg-gray-100 border-t border-gray-100'
+              className={`h-7 w-full cursor-ns-resize flex flex-col items-center justify-center transition-colors select-none touch-none ${
+                isDark ? 'hover:bg-slate-800/60 border-t border-slate-700/60' : 'hover:bg-gray-100 border-t border-gray-100'
               }`}
               onMouseDown={startDrag}
               onTouchStart={startDrag}
@@ -226,11 +236,10 @@ function CalendarInner() {
               <div className={`w-10 h-1 rounded-full ${isDark ? 'bg-slate-600' : 'bg-gray-300'}`} />
             </div>
 
-            {/* Notes panel */}
+            {/* Notes panel — height set by CSS class; JS drag overrides inline */}
             <div
               ref={notesContainerRef}
               className="cal-notes-container flex flex-col flex-shrink-0"
-              style={{ height: typeof window !== 'undefined' && window.innerWidth < 640 ? '160px' : '220px' }}
             >
               <NotesPanel isDark={isDark} />
             </div>

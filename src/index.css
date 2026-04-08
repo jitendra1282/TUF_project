@@ -66,42 +66,63 @@ button, select, a {
 
 /* ── Hero wrapper: column mode (portrait phone) ──────────────────────────── */
 .cal-hero-wrapper {
-  height: clamp(90px, 28vh, 200px); /* compact slice in portrait */
+  height: clamp(90px, 28vh, 200px); /* compact slice in portrait column mode */
   flex-shrink: 0;
 }
 
-/* Row mode (≥640px — landscape phone, tablet, desktop): hero is full height */
+/* Row mode (≥640px): hero grows to fill the row height */
 @media (min-width: 640px) {
   .cal-hero-wrapper {
-    height: auto !important; /* stretch to fill flex row height */
+    height: auto !important;
   }
 }
 
-/* ── Landscape phone: extra compact layout ───────────────────────────────── */
-/* Targets phones held horizontally: narrow height, wider than portrait */
-@media (orientation: landscape) and (max-height: 520px) {
-  /* Notes panel: clip to a minimal height to give grid more room */
+/* ── Notes panel default heights (no inline style in JSX) ───────────────── */
+/* JS drag sets element.style.height which wins over these class rules       */
+.cal-notes-container {
+  height: 200px; /* desktop default */
+}
+@media (max-width: 767px) and (orientation: portrait) {
   .cal-notes-container {
-    height: 110px !important;
-    min-height: 80px !important;
+    height: 155px; /* portrait phone default */
   }
+}
+@media (orientation: landscape) and (max-height: 520px) {
+  .cal-notes-container {
+    height: 115px; /* landscape phone default — JS drag still overrides this */
+  }
+}
 
+/* ── Landscape phone: compact UI so everything fits ─────────────────────── */
+@media (orientation: landscape) and (max-height: 520px) {
   /* MonthNavigation: tighten padding */
   .cal-month-nav {
     padding-top: 4px !important;
     padding-bottom: 4px !important;
   }
 
-  /* Shrink the large month dropdown text so nav is shorter */
+  /* Shrink the large month dropdown text so the nav bar is shorter */
   .cal-month-nav select {
     font-size: 0.75rem !important;
     padding-top: 1px !important;
     padding-bottom: 1px !important;
   }
 
-  /* Resizer handle: slimmer in landscape */
+  /* Resizer handle: slimmer target so more space goes to grid */
   .cal-content-panel [role="separator"] {
-    height: 12px !important;
+    height: 14px !important;
+  }
+
+  /* Notes textarea: override rows={4} intrinsic height, allow scroll */
+  .notes-textarea {
+    height: 100% !important;
+    min-height: 48px !important;
+    overflow-y: auto !important;
+  }
+
+  /* NotesPanel inner: stay within the container, no overflow clipping text */
+  .cal-notes-container > div {
+    overflow: hidden;
   }
 }
 
