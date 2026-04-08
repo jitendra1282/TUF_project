@@ -1,100 +1,175 @@
-# 📅 Jitendra's Calendar
+# 📅 Jitendra's Wall Calendar
 
-A beautifully designed, fully interactive wall calendar web component built as part of a Frontend Engineering Challenge. Inspired by the tactile and visual appeal of physical wall calendars, this project transforms a traditional aesthetic into a highly responsive, premium digital experience complete with fluid animations, date range selection, and an integrated notes system.
+<div align="center">
+
+![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![Vite](https://img.shields.io/badge/Vite-8-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-v4-38BDF8?style=for-the-badge&logo=tailwindcss&logoColor=white)
+![Framer Motion](https://img.shields.io/badge/Framer_Motion-12-FF0055?style=for-the-badge&logo=framer&logoColor=white)
+![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)
+
+**A premium, fully interactive wall calendar web app — built for the TUF Frontend Engineering Challenge.**
+
+[🚀 Live Demo](https://tuf-project-five.vercel.app/) · [🎥 Demo Video](https://drive.google.com/drive/folders/1hzJdxRuamKhIJo9BJu3bXUTCL_-fTUyv?usp=sharing) · [📂 Repository](https://github.com/jitendra1282/TUF_project)
+
+</div>
 
 ---
 
-## 🚀 Live Demo
-[https://tuf-project-five.vercel.app/](https://tuf-project-five.vercel.app/)
+## 📖 Overview
 
-## 🎥 Demo Video
-[Google Drive Demo Video](https://drive.google.com/drive/folders/1hzJdxRuamKhIJo9BJu3bXUTCL_-fTUyv?usp=sharing)
+Inspired by the tactile feel of physical wall calendars, this project transforms a classic aesthetic into a **premium digital experience**. It features fluid animations, intelligent date-range selection, a resizable notes panel, seasonal hero imagery, and a meticulous attention to design detail — all built from scratch using modern React patterns and zero boilerplate.
 
 ---
 
-## ✨ Project Features
+## ✨ Features
 
-### Core Features
-- **Wall Calendar Aesthetic:** Combines a high-impact, full-bleed hero image panel on the left with a meticulously crafted date grid on the right—just like a real wall calendar.
-- **Day Range Selection:** Fluid multi-click selection supporting distinct visual states for the start date, end date, and dynamically connected in-between ranges.
-- **Notes System:** 
-  - *Month-level notes:* Record global reminders or goals tied to the current month.
-  - *Range-based notes:* Attach specific notes directly to a selected timeline (e.g., "Vacation" for April 14th – April 20th).
-- **Fully Responsive Design:** 
-  - *Desktop:* Immersive, full-screen side-by-side layout.
-  - *Mobile:* Graceful stacked layout with a sticky month-navigation header so users never lose context when scrolling the grid.
+### 🗓 Core Calendar
+| Feature | Description |
+|---|---|
+| **Wall Calendar Layout** | Full-bleed seasonal hero panel on the left + crafted date grid on the right |
+| **Date Range Selection** | Two-click range picking with distinct start, end, and in-between visual states |
+| **Month Navigation** | Smooth animated transitions between months via arrows or dropdown |
+| **Seasonal Backgrounds** | Hero panel automatically changes imagery to reflect the current season |
+| **Holiday Indicators** | Color-coded dots and contextual tooltips for standard holidays |
 
-### Advanced / Bonus Features
-- **Smooth Animations:** Buttery 60fps micro-interactions powered by Framer Motion, featuring seamless simultaneous month cross-fades without latency, spring-based date cell scaling, and sliding panels.
-- **Theme Switching:** Premium glassmorphism UI offering instantly swappable Light, Dark, and System Auto modes.
-- **Holiday Indicators:** Contextual tooltips and color-coded dots denoting specific custom or standard holidays dynamically.
-- **Copy Summary Feature:** Quick-action shortcut generating a formatted clipboard text summary of your currently selected dates and corresponding notes.
-- **Keyboard Navigation:** Accessibility-friendly layout allowing robust tabbing (`Space/Enter` interaction) for power users.
-- **Custom Resizable Split-Pane:** An interactive, draggable horizontal handle that allows users to fluidly squish or expand the calendar grid and notes panel in real-time, strictly bound within desktop screen limits.
+### 📝 Notes System
+| Feature | Description |
+|---|---|
+| **Month Notes** | Global reminders and goals tied to the entire current month |
+| **Range Notes** | Notes scoped to a specific selected date range (e.g., "Vacation: Apr 14–20") |
+| **Resizable Panel** | Draggable divider lets you resize the notes area in real-time (25%–50% viewport) |
+
+### 🎨 Design & UX
+| Feature | Description |
+|---|---|
+| **Theme Switching** | Instant Light / Dark / System Auto modes with glassmorphism styling |
+| **60fps Animations** | Spring-physics micro-interactions powered by Framer Motion |
+| **Copy Summary** | One-click export of your selected dates + notes to clipboard |
+| **Keyboard Navigation** | Full `Tab` / `Space` / `Enter` accessibility support |
+| **Mini Month Preview** | Quick-glance adjacent months rendered inline |
+| **Spiral Binding** | Decorative SVG spiral binding that reinforces the physical calendar metaphor |
+
+### 📱 Responsive Design
+- **Desktop:** Immersive full-screen side-by-side layout with draggable split pane
+- **Mobile:** Graceful stacked layout with sticky month navigation header and swipe gestures
 
 ---
 
 ## 🏗 Tech Stack
 
-- **React & Vite:** For fast, modular component structures and lightning-fast HMR payload delivery.
-- **Tailwind CSS:** For highly-customizable atomic styling mixed with complex layout constraint grids.
-- **Framer Motion:** Powering the heavy-lifting of spring physics and layout-level smooth page transitions.
-- **date-fns:** Simplifying complex calendar leap-year and bounds mathematical generation.
-- **lucide-react:** Providing clean, vectorized feather icons for the navigation and toolbar.
+| Technology | Version | Purpose |
+|---|---|---|
+| **React** | 19 | UI component framework |
+| **Vite** | 8 | Build tool & dev server (HMR) |
+| **Tailwind CSS** | v4 | Utility-first styling |
+| **Framer Motion** | 12 | Animations & spring physics |
+| **date-fns** | 4 | Date arithmetic & calendar grid generation |
+| **lucide-react** | latest | Clean SVG icon set |
 
 ---
 
-## 🪝 React Hooks Architecture
+## 🪝 React Architecture
 
-The project relies heavily on robust modern React paradigms to ensure peak performance without unnecessary DOM painting:
+The app is built on a clear, performant React pattern — state lives centrally, UI stays lean.
 
-### Built-in Hooks
-- **`useReducer`:** Acts as the brain of the application (`CalendarContext.jsx`), centralizing complex date logic, boundary constraints, and selection states away from UI components.
-- **`useMemo`:** Heavily guards expensive calculations—like evaluating 6-week month boundary matrices (`buildCalendarGrid`)—so the grid doesn't recalculate when users type inside notes.
-- **`useCallback`:** Memoizes heavy event listeners like touch-swipes and 60fps frame drags to prevent breaking memoized child components.
-- **`useRef`:** Put to extreme use bypassing the React rendering tree to make direct `style.height` DOM manipulations during the Split-Pane dragging events, preventing the application from dragging sluggishly. Also used as a rapid-fire double-click guard.
-- **`useContext`:** Used to distribute calendar data globally, completely avoiding prop-drilling.
-- **`useEffect`:** Handles background background-image preloading caching and synchronizing the `.dark` class directly into the HTML root element.
+### State Management
+- **`useReducer`** — Central brain of the app inside `CalendarContext`. Manages all date selection, boundary constraints, month navigation, and note state in one predictable reducer.
+- **`useContext`** — Distributes calendar state globally to all components — zero prop drilling.
+
+### Performance
+- **`useMemo`** — Guards expensive computations like `buildCalendarGrid` (a 6-week matrix) so the grid never recalculates while the user is typing notes.
+- **`useCallback`** — Memoizes touch-swipe and drag-frame event listeners, keeping child components from re-rendering unnecessarily.
+- **`useRef`** — Drives direct `style.height` DOM mutations during split-pane dragging, bypassing React's render cycle entirely for silky-smooth resizing. Also used as a double-click debounce guard.
+- **`useEffect`** — Handles background image preloading and syncs the `.dark` class with the HTML root.
 
 ### Custom Hooks
-- **`useCalendar()`:** A strict context accessor wrapping that ensures safe payload deployments.
-- **`useSwipe()`:** A custom utility tracking `onTouchStart` and `onTouchEnd` tracking X-axis deltas to fire native mobile swiping events.
-- **`useIsDark()`:** Intercepts system media-queries (`prefers-color-scheme: dark`) and reconciles them with the user's manual override choice.
+| Hook | Role |
+|---|---|
+| `useCalendar()` | Safe context accessor — throws if used outside `CalendarProvider` |
+| `useSwipe()` | Tracks `touchstart`/`touchend` X-axis deltas to fire swipe navigation on mobile |
+| `useIsDark()` | Reconciles `prefers-color-scheme` system preference with the user's manual override |
+
+---
+
+## 📁 Project Structure
+
+```
+src/
+├── components/
+│   └── WallCalendar/
+│       ├── index.jsx                  # Root layout & split-pane orchestration
+│       ├── context/                   # CalendarContext + useReducer state
+│       ├── constants/                 # Holiday data, theme tokens
+│       ├── utils/                     # dateHelpers, grid builder
+│       └── components/
+│           ├── HeroPanel.jsx          # Seasonal hero image panel
+│           ├── SeasonalBackground.jsx # Season detection & image management
+│           ├── DateGrid.jsx           # Calendar grid with range selection
+│           ├── MonthNavigation.jsx    # Month/year navigation controls
+│           ├── NotesPanel.jsx         # Month & range notes with tabs
+│           ├── ThemeSwitcher.jsx      # Light / Dark / Auto toggle
+│           ├── ExportButton.jsx       # Copy summary to clipboard
+│           ├── MiniMonthPreview.jsx   # Compact adjacent month preview
+│           └── SpiralBinding.jsx      # Decorative SVG spiral
+├── App.jsx
+├── main.jsx
+├── index.css
+└── App.css
+```
 
 ---
 
 ## ⚙️ Installation & Setup
 
-1. **Clone the repository**
-   ```bash
-   git clone <repo-link>
-   cd project
-   ```
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-3. **Run the local development server**
-   ```bash
-   npm run dev
-   ```
-*(Runs automatically on `http://localhost:5173` or `3000` depending on your environment setup).*
+```bash
+# 1. Clone the repository
+git clone https://github.com/jitendra1282/TUF_project.git
+cd TUF_project
+
+# 2. Install dependencies
+npm install
+
+# 3. Start the development server
+npm run dev
+```
+
+> Runs on `http://localhost:5173` by default.
 
 ---
 
 ## 💻 How to Use
 
-1. **Select a start date:** Click any valid date in the calendar grid.
-2. **Select an end date:** Click a subsequent date to link them and visually display the animated range selection bar. (Clicking a date twice clears your selection).
-3. **Add notes:** Click on the Notes Panel tabs below the calendar to type reminders for the general `Month` or your specified `Range`.
-4. **Resize View:** Hover over the draggable divider above the notes panel and drag it up or down to reveal more notepad space or more calendar space.
-5. **Switch months:** Use the left/right arrows, or interact with the dropdown.
-6. **Export:** Click "Copy Summary" in the top right to dump your currently focused timeline into your system clipboard!
+1. **Pick a start date** — Click any date on the calendar grid.
+2. **Pick an end date** — Click another date to create an animated range. Double-clicking a date clears the selection.
+3. **Add notes** — Use the tabbed Notes Panel below the grid to write `Month` or `Range` notes.
+4. **Resize the panel** — Drag the horizontal divider to reveal more notes space or more calendar.
+5. **Switch months** — Use the `‹` / `›` arrows or click the month/year dropdown.
+6. **Change theme** — Click the theme switcher (☀️ / 🌙 / 💻) in the top bar.
+7. **Export** — Hit **Copy Summary** to copy your selected range and notes to the clipboard.
 
 ---
 
-## 🔮 Future Scalability
+## 🔮 Future Roadmap
 
-- **Backend Persistence:** Ready to be wired up to Firebase/Supabase to save notes to a database natively.
-- **Drag-to-select:** Currently uses a two-click bounding algorithm; can be expanded to support native mouse-hold drag events.
-- **Multi-user Support:** Allowing calendar sharing with color-coded multi-range overlap identifiers for different team members.
+- [ ] **Backend Persistence** — Wire to Firebase / Supabase for cloud-saved notes per user
+- [ ] **Drag-to-select** — Replace the two-click algorithm with a mouse-hold drag selection
+- [ ] **Multi-user Sharing** — Color-coded overlapping ranges for team calendars
+- [ ] **Recurring Events** — Support weekly/monthly repeating reminders
+- [ ] **Export to iCal / Google Calendar** — One-click export of selected ranges as `.ics`
+
+---
+
+## 👤 Author
+
+**Nandipati Jitendra Krishna Sri Sai**
+
+[![GitHub](https://img.shields.io/badge/GitHub-jitendra1282-181717?style=flat-square&logo=github)](https://github.com/jitendra1282)
+
+---
+
+<div align="center">
+
+Made with ❤️ for the **TUF Frontend Engineering Challenge**
+
+</div>
